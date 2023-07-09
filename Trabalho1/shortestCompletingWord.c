@@ -30,15 +30,16 @@ ShortestCompletingWord
 
 char * ShortestCompletingWord( char * licensePlate, char ** words, int wordsSize ) {
     char validLetters[strlen ( licensePlate ) + 1], word[16];
-    int  i, j, k, totLetters = 0, indexAceptedWord = 0, lenghtAceptedWord = 20;
+    int  i, j, k, totLetters = 0, indexAceptedWord = 0, lenghtAceptedWord = 21;
     bool invalidWord;
     
 
     for ( i = 0; licensePlate[i] != '\0'; i++ ) {
+
         if ( ( ( licensePlate[i] - 'a' ) >= 0) && ( ( licensePlate[i] - 'a' ) < 26 ) )
             validLetters[totLetters++] = licensePlate[i] ;
         else if ( ( ( 'a' - licensePlate[i] ) >= 7 ) && ( ( 'a' - licensePlate[i] ) <= 32 ) )
-            validLetters[totLetters++] = licensePlate[i] +32 ;
+            validLetters[totLetters++] = licensePlate[i] +32 ;    
     }
     validLetters[totLetters] = '\0';
 
@@ -70,7 +71,7 @@ char * ShortestCompletingWord( char * licensePlate, char ** words, int wordsSize
 
         if ( !invalidWord && ( ( int ) strlen ( words[k] ) ) < lenghtAceptedWord ) {
             indexAceptedWord = k;
-            lenghtAceptedWord = strlen ( words[k] ) ; 
+            lenghtAceptedWord = (int) strlen ( words[k] ) ; 
         }
 
     }
