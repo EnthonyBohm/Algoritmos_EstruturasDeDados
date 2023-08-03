@@ -14,7 +14,7 @@ int main(){
     char *words[] = {
         "nice","idea","hard","statement","money","later","interesting","which","purpose","evening"
     };
-    char *answer = ShortestCompletingWord("IaDe806", words, 10);
+    char *answer = ShortestCompletingWord("Im806", words, 10);
 
     puts(answer);
 }
