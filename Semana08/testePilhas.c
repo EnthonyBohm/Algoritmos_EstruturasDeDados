@@ -13,7 +13,8 @@ int main()
     int user_Choice;
 
     studentStack = (stack *) malloc(sizeof(stack));
-    RESET(studentStack);
+
+    RESET();
     
     while (user_Choice != 0){
         printf( "MENU: \n"\
@@ -26,19 +27,19 @@ int main()
 
         switch(user_Choice){
             case 1:
-                if (PUSH(studentStack))
+                if (PUSH())
                     printf("Student Added Sucessfully");
                 else
                     printf("Error Adding Student!");
                 break;
             case 2:
-                if (POP(studentStack))
+                if (POP())
                     printf("Student deleted sucessfully");
                 else
                     printf("Error removing student");
                 break;
             case 3:
-                CLEAR(studentStack);
+                CLEAR();
                 break;
             case 0:
                 printf("Goodbye");

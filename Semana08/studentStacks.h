@@ -13,50 +13,35 @@ typedef struct
     int classMiss;
 } Student;
 
-typedef struct 
+struct node
 {
-    Student students[MAX_STUDENTS];
-    int floor;
-    int ceil;
-    int limit;
-} stack;
+    Student* students;
+    struct node* ceil;
+    struct node* floor;
+    int size;
+};
 
-void RESET(stack *studentStack)
-{
-    studentStack -> floor = 0;
-    studentStack -> ceil = 0;
-    studentStack -> limit = STACK_LIMIT;
+typedef struct node StudentStack;
+
+
+void RESET(StudentStack* studentStack)
+{   
+    studentStack = (StudentStack *) malloc(sizeof(StudentStack));
+    studentStack -> students = (Student*) malloc (sizeof(Student));
+    studentStack -> ceil = studentStack -> students;
+    studentStack -> floor = studentStack -> students;
 }
 
-bool FULL(stack *studentStack)
-{
-    return studentStack->ceil == studentStack->limit;
-}
-
-bool EMPTY(stack *studentStack)
+bool EMPTY(StudentStack *studentStack)
 {
     return studentStack->floor == studentStack->ceil;
 }
 
-bool PUSH(stack *studentStack) 
-{
-    if (FULL(studentStack))
-        return false;
-
-    printf("Student name: ");
-    scanf("%s", studentStack -> students[studentStack -> ceil].name);
-    getchar();
-
-    printf("%s Overall Average: ", studentStack->students[studentStack->ceil].name);
-    scanf("%f", &studentStack->students[studentStack->ceil].overallAverage);
-    getchar();
-
-    printf("Number of times that %s missed class", studentStack->students[studentStack->ceil].name);
-    scanf("%d", &studentStack->students[studentStack->ceil].classMiss);
-    getchar();
-
-    studentStack->ceil++;
-    return true;
+void PUSH(StudentStack *studentStack ) 
+{    
+    studentStack -> size++;
+    studentStack -> students = (Student *) realloc (sizeof (Student) * studentStack -> size);
+    
 }
 
 bool POP(stack *studentStack) 
