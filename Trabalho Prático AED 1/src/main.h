@@ -2,7 +2,7 @@
 #define MAIN_H
 
 struct matrix{
-    struct matrix *left;
+    struct matrix *right;
     struct matrix *below;
     int line;
     int column;
@@ -12,14 +12,17 @@ struct matrix{
 typedef struct matrix Matrix;
 
 Matrix* matrix_create (void);
-Matrix* insertHeadLines (Matrix* head, int value);
-Matrix* insertHeadColumns (Matrix* head, int value);
-void matrix_destroy (Matrix* m);
-void matrix_print (Matrix* m);
+void    matrix_destroy (Matrix* m);
+void    matrix_print (Matrix* m);
 Matrix* matrix_add (Matrix *m, Matrix *n);
 Matrix* matrix_multiply (Matrix *m, Matrix *n);
 Matrix* matrix_transpose (Matrix *m, Matrix *n);
-Matrix* getelem(Matrix* m, int line, int column);
-Matrix* setelem(Matrix* m, int line, int column, float content);
+float   getElem(Matrix* m, int line, int column);
+void    setElem(Matrix* m, int line, int column, float content);
+//ExtraFunctions
+void    adjustPointer(Matrix* m, Matrix* newNode);
+Matrix* startMatrixPointers(int lines, int columns);
+int getLines(Matrix *m);
+int getColumns(Matrix *m);
 
 #endif
