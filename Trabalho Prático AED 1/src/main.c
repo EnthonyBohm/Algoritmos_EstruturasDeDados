@@ -5,18 +5,8 @@
 
 int main()
 {
-    Matrix *A = matrix_create(); getchar();
-    matrix_print(A);
-    Matrix *B = matrix_create(); getchar();
-    matrix_print(B);
-    Matrix *C = matrix_add(A, B);
-    matrix_print(C);
-    Matrix *D = matrix_multiply(A, B);
-    matrix_print(D);
+    Matrix* A = matrix100Megas(1024);
     matrix_destroy(A);
-    matrix_destroy(B);
-    matrix_destroy(C);
-    matrix_destroy(D);
     return 0;
 }
 
@@ -345,4 +335,33 @@ int getColumns(Matrix *m){
     void*               startAdress = m;
     for ( i = 0; m->below != startAdress; i++, m = m->below );
     return i;
+}
+
+Matrix* matrix100Megas(unsigned int m){
+    unsigned int i, j;
+    int size;
+    float element;
+    Matrix* giantMatrix = startMatrixPointers (m , m);
+    Matrix* newNode;
+    Matrix* matrixHead = giantMatrix;
+
+    
+    for(i = 1; i < m; i++){
+        giantMatrix = giantMatrix->below;
+        giantMatrix = giantMatrix->right;
+        for(j = 1; j < m; j++){
+            scanf("%f",&element);
+            if(element == 0){
+                continue;
+            } else{
+                newNode             = (Matrix*) malloc(sizeof(Matrix));
+                newNode -> info     = element;
+                newNode -> line     = i;
+                newNode -> column   = j;
+
+                adjustPointer(matrixHead, newNode);
+            }
+        }
+    }
+    return giantMatrix;
 }

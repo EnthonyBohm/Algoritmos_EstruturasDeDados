@@ -22,7 +22,8 @@ void    setElem(Matrix* m, int line, int column, float content);
 //ExtraFunctions
 void    adjustPointer(Matrix* m, Matrix* newNode);
 Matrix* startMatrixPointers(int lines, int columns);
-int getLines(Matrix *m);
-int getColumns(Matrix *m);
+int     getLines(Matrix *m);
+int     getColumns(Matrix *m);
+Matrix* matrix100Megas(unsigned int m);
 
 #endif

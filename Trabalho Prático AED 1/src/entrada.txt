@@ -1,8 +1,12 @@
-4 4
-1 1 50
-2 1 10
-2 3 20
-4 1 -30
-4 3 -60
-4 4 5
-.
+Matrix *A = matrix_create(); getchar();
+    matrix_print(A);
+    Matrix *B = matrix_create(); getchar();
+    matrix_print(B);
+    Matrix *C = matrix_add(A, B);
+    matrix_print(C);
+    Matrix *D = matrix_multiply(A, B);
+    matrix_print(D);
+    matrix_destroy(A);
+    matrix_destroy(B);
+    matrix_destroy(C);
+    matrix_destroy(D);

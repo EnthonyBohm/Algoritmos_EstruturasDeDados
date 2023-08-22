@@ -7,16 +7,15 @@
 int main(){
     Node** RootNode = NULL;
 
-    *RootNode = RESET(100);
+    RootNode = RESET(10);
 
-    PUSH((*RootNode), 10);
-    PUSH((*RootNode), 10);
-    PUSH((*RootNode), 1002);
-    PUSH((*RootNode), 102);
-    PUSH((*RootNode), 122);
-    PUSH((*RootNode), 32);
-    PUSH((*RootNode), 55);
-    PUSH((*RootNode), 88);
+    PUSH(RootNode, 100);
+    PUSH(RootNode, 1002);
+    PUSH(RootNode, 102);
+    PUSH(RootNode, 122);
+    PUSH(RootNode, 32);
+    PUSH(RootNode, 55);
+    PUSH(RootNode, 88);
 
 }
 
@@ -44,41 +43,34 @@ Node** RESET(int content)
     and put it on the right spot
 =========================================================
 */
-void PUSH(Node* root, int content){
-    Node* newNode = NULL;
-
-    newNode = (Node*) malloc(sizeof(Node));
-
-    newNode -> content  = content;
-    newNode -> leftSon  = NULL;
-    newNode -> rightSon = NULL;
-
-    insertInPlace(root, newNode);
-
-}
-
-/*
-=========================================================
-    insertInPlace
-    Find a Place to insert the New Node and Insert it
-=========================================================
-*/
-void insertInPlace (Node* position, Node* newNode){
-    if((newNode -> content) < (position ->content) ){
-        if (position -> leftSon == NULL)
-            position -> leftSon = newNode;
+int PUSH(Node** root, int content){
+    if(*root == NULL)
+    {
+        *root = (Node*) malloc (sizeof(Node));
+        (*root)->content    = content;
+        (*root)->leftSon    = NULL;
+        (*root)->rightSon   = NULL;
+        return 1;
+    } else if (content < (*root)->content){
+        if ( PUSH( &(*root)->leftSon, content))
+        {
+            if(balancing(root))
+                return 0;
+            else
+                return 1;
+        }
+    } else if (content > (*root)->content) {
+        if ( PUSH ( &(*root)->rightSon, content)){
+            if (balancing (root))
+                return 0;
+            else
+                return 1;
+        }
         else
-            insertInPlace(position -> leftSon, newNode);
+            return 0;
     }
-
-    else{
-        if (position -> rightSon == NULL)
-            position -> rightSon = newNode;
-        else
-            insertInPlace(position -> rightSon, newNode);
-    }
+    return 0;
 }
-
 
 /*
 =========================================================
@@ -119,37 +111,100 @@ int balancingFactor (Node* rootNode)
 
 /*
 =========================================================
-    RSR
-    Do a right Simple Rotation
+    rightRotation
+    Do a simple Right Rotation
 =========================================================
 */
-void SRR (Node** pivot){
-    Node* auxNode;
-
-    auxNode = (*pivot)->rightSon;
-    (*pivot)->rightSon = auxNode->leftSon;
-    auxNode->leftSon = (*pivot);
-    (*pivot) = auxNode;
-}
-
-void SLR (Node** pivot){
+void rightRotation (Node** pivot){
     Node* auxNode;
 
     auxNode = (*pivot)->leftSon;
-    (*pivot)->leftSon = auxNode->rightSon;
+    if (auxNode->rightSon == NULL)
+        (*pivot)->leftSon = NULL;
+    else
+        (*pivot)->leftSon = auxNode->rightSon;
     auxNode->rightSon = (*pivot);
     (*pivot) = auxNode;
 }
 
-int lBalancing (Node** pivot){
+/*
+=========================================================
+    leftRotation
+    Do a simple left Rotation
+=========================================================
+*/
+void leftRotation (Node** pivot){
+    Node* auxNode;
+
+    auxNode = (*pivot)->rightSon;
+    if ( auxNode->leftSon != NULL)
+        (*pivot)->rightSon = auxNode->leftSon;
+    else
+        (*pivot)->rightSon = NULL;
+    auxNode->leftSon = (*pivot);
+    (*pivot) = auxNode;
+}
+
+/*
+=========================================================
+    lBalancing
+    Balance a Disbalanced Tree, by either
+    doing a simple rotation or a double rotation
+=========================================================
+*/
+int lBalancing (Node** pivot)
+{
     int lBF = balancingFactor((*pivot)->leftSon);
     if(lBF > 0)
     {  /*Simple Right Rotation*/
-        SRR(pivot);
+        rightRotation(pivot);
         return 1;
     } else if ( lBF < 0)
     { /*Double Right Rotation*/
-        SLR( &((*pivot)->leftSon) );
-        SRR(pivot);
+        leftRotation( &((*pivot)->leftSon) );
+        rightRotation(pivot);
+        return 1;
     }
+    return 0;
+}
+/*
+=========================================================
+    rBalancing
+    Balance a Disbalanced Tree, by either
+    doing a simple rotation or a double rotation
+=========================================================
+*/
+int rBalancing (Node** pivot)
+{
+    int rBF = balancingFactor((*pivot)->rightSon);
+    if(rBF > 0){ /*Simple left Rotation*/
+        leftRotation(pivot);
+        return 1;
+    }
+    else if(rBF < 0){ /*Double Rotation */
+        rightRotation( &((*pivot)->rightSon) );
+        leftRotation(pivot);
+        return 1;
+    }
+    return 0;
+}
+
+/*
+=========================================================
+    balancing
+    Check if a Tree is balanced, if it is, return's 0
+    if it isn't aply'es the correction and return 1
+=========================================================*/
+int balancing (Node** pivot)
+{
+    int BF = balancingFactor(*pivot);
+
+    if(BF > 1)
+    {
+        return lBalancing(pivot);
+    } else if (BF < -1){
+        return rBalancing(pivot);
+    }
+    
+    return 0;
 }
