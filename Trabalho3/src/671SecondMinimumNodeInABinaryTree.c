@@ -13,6 +13,7 @@ typedef struct TreeNode TreeNode;
 int                 findSmallest (TreeNode* node, int rootValue, int* secondSmallestValue);
 int                 findSecondMinimumValue(struct TreeNode* root);
 TreeNode*           newNode(int value);
+void                destroyTree(TreeNode* node);
 
 int main(){
   TreeNode*         root;
@@ -21,11 +22,11 @@ int main(){
   root = (TreeNode*) malloc (sizeof(TreeNode));
 
   //Test Case 1     || Expected : 5
-    // root->val = 2;
-    // root->left = newNode (2);
-    // root->right = newNode (5);
-    // root->right->left = newNode (5);
-    // root->right->right = newNode (7);
+    root->val = 2;
+    root->left = newNode (2);
+    root->right = newNode (5);
+    root->right->left = newNode (5);
+    root->right->right = newNode (7);
 
   //Test Case 2     || Expected : 2
     // root->val = 2;
@@ -33,12 +34,14 @@ int main(){
     // root->right = newNode(2);
 
   //Test Case 3     ||  Expected : 4
-    root->val = 2;
-    root->left = newNode(2);
-    root->right = newNode(4);
+    // root->val = 2;
+    // root->left = newNode(2);
+    // root->right = newNode(4);
 
   answer = findSecondMinimumValue(root);
   printf ( "Result: %d", answer ) ;
+
+  destroyTree(root);
 }
 
 
@@ -88,6 +91,15 @@ int findSmallest ( TreeNode* node, int rootValue, int* secondSmallestValue ){
   return *secondSmallestValue;
 }
 
+
+//Extra Functions
+
+/*
+====================================================================
+  NewNode
+  return a pointer to a new Alocated position for a treeNode
+====================================================================
+*/
 TreeNode* newNode(int value){
   TreeNode* newNode = (TreeNode*) malloc(sizeof(TreeNode));
   newNode->left = NULL;
@@ -95,4 +107,20 @@ TreeNode* newNode(int value){
   newNode->val = value;
 
   return newNode;
+}
+
+
+/*
+====================================================================
+  destroyTree
+  dealocate all the tree positions on memory
+====================================================================
+*/
+void destroyTree(TreeNode* node){
+  if(!node) return;
+
+  destroyTree(node->left);
+  destroyTree(node->right);
+
+  free(node);
 }
