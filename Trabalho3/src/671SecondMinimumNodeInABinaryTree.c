@@ -33,9 +33,9 @@ int main(){
     // root->right = newNode(2);
 
   //Test Case 3     ||  Expected : 4
-    // root->val = 2;
-    // root->left = newNode(2);
-    // root->right = newNode(4);
+    root->val = 2;
+    root->left = newNode(2);
+    root->right = newNode(4);
 
   answer = findSecondMinimumValue(root);
   printf ( "Result: %d", answer ) ;
