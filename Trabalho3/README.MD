@@ -10,7 +10,7 @@ Due an given binary tree, where every node has two or zero subnodes, wich, the f
 tree = [2,2,5,null,null,5,7]
 
 **Output**  
-5
+ 5
 ---
 ### Case 2
 **Input:**
