@@ -5,7 +5,7 @@
 
 int main()
 {
-    Matrix* A = matrix100Megas(1024);
+    Matrix* A = matrix100Megas(5000);
     matrix_destroy(A);
     return 0;
 }
@@ -345,10 +345,17 @@ Matrix* matrix100Megas(unsigned int m){
     Matrix* newNode;
     Matrix* matrixHead = giantMatrix;
 
-    
+    size = sizeof(giantMatrix);
+    for(giantMatrix = giantMatrix->right; giantMatrix != matrixHead; giantMatrix = giantMatrix->right){
+        size +=sizeof(giantMatrix);
+    }
+
+    giantMatrix = giantMatrix->below;
+    size += sizeof(giantMatrix);
     for(i = 1; i < m; i++){
-        giantMatrix = giantMatrix->below;
         giantMatrix = giantMatrix->right;
+        size += sizeof(giantMatrix);
+
         for(j = 1; j < m; j++){
             scanf("%f",&element);
             if(element == 0){
@@ -359,9 +366,16 @@ Matrix* matrix100Megas(unsigned int m){
                 newNode -> line     = i;
                 newNode -> column   = j;
 
-                adjustPointer(matrixHead, newNode);
+                newNode->right = giantMatrix->right;
+                giantMatrix->right = newNode;
+                giantMatrix = giantMatrix->right;
+                size += sizeof(giantMatrix);
             }
         }
+        giantMatrix = giantMatrix->right;
+        giantMatrix = giantMatrix->below;
+        size += sizeof(giantMatrix);
     }
+    printf("The Size of the new Matrix is: %d bytes", size);
     return giantMatrix;
 }
