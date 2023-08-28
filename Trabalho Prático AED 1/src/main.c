@@ -1,3 +1,10 @@
+/*
+    Trabalho Prático de Algoritmos e Estruturas de Dados
+    Dupla:
+    Enthony Bohm
+    Laiane
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -5,8 +12,27 @@
 
 int main()
 {
+    //Giant Matrix Test
     Matrix* A = matrix100Megas(5000);
     matrix_destroy(A);
+
+    //Normal Test
+    // Matrix *A = matrix_create(); getchar();
+    // matrix_print( A ); 
+    // Matrix *B = matrix_create(); getchar();
+    // matrix_print( B );
+    // Matrix *C = matrix_add( A, B ); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // C = matrix_multiply( A, B ); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // C = matrix_transpose(A); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // matrix_destroy( A );
+    // matrix_destroy( B );
+
     return 0;
 }
 
@@ -59,11 +85,11 @@ void matrix_destroy (Matrix* m){
             free(deadNode);
         }
         
-        deadNode = m->right;
-        if (deadNode == m)
-            continue;
-
-        aux = deadNode -> right;
+        deadNode = m->right;                                                //  // // // // 
+        if (deadNode == m)                                                  //
+            continue;                                                       // //
+                                                                            // // //
+        aux = deadNode -> right;                                            //
         if (aux == m){
             free (deadNode);
             deadNode = aux;
@@ -212,6 +238,25 @@ Matrix* matrix_multiply (Matrix *m, Matrix *n){
     return newMatrixHead;
 }
 
+// ============================================================
+
+Matrix* matrix_transpose(Matrix* m) {
+    int lines = getColumns(m);
+    int columns = getLines(m);
+    
+    Matrix* newMatrixHead = startMatrixPointers(lines, columns);
+    
+    int i, j;
+    for (i = 1; i <= lines; i++) {
+        for (j = 1; j <= columns; j++) {
+            float value = getElem(m, j, i);
+            setElem(newMatrixHead, i, j, value);
+        }
+    }
+    
+    return newMatrixHead;
+
+}
 
 /*
 ==============================================================
@@ -247,11 +292,11 @@ void adjustPointer(Matrix* m, Matrix* newNode){
     int                 i;
     
     startAdress = m;
-    for ( i = 0; i < newNode->line; i++){
-        m = m->below;
-    }
-    aux = m;
-    while (m -> right != aux){
+    for ( i = 0; i < newNode->line; i++){                               // // // // //
+        m = m->below;                                                   //
+    }                                                                   // // //
+    aux = m;                                                            // //
+    while (m -> right != aux){                                          //
         if(newNode->column < m->right->column)
             break;
         m = m->right;
@@ -293,12 +338,12 @@ Matrix* startMatrixPointers(int lines, int columns){
 
     aux = matrixHead;
     for(i = 0; i < lines; i++, aux = aux->below){
-        newNode             = (Matrix*) malloc (sizeof (Matrix));
-        newNode->line       = -1;
-        newNode->right      = newNode;
-        aux->below          = newNode;
-    }
-    aux->below = matrixHead;
+        newNode             = (Matrix*) malloc (sizeof (Matrix));   // // // // // //
+        newNode->line       = -1;                                   //
+        newNode->right      = newNode;                              //
+        aux->below          = newNode;                              //
+    }                                                               //
+    aux->below = matrixHead;                                        //
     aux = matrixHead;
     for (i = 0; i < columns; i++, aux = aux->right){
         newNode             = (Matrix*) malloc (sizeof (Matrix));
@@ -339,9 +384,9 @@ int getColumns(Matrix *m){
 
 Matrix* matrix100Megas(unsigned int m){
     unsigned int i, j;
-    int size;
+    long unsigned int size;
     float element;
-    Matrix* giantMatrix = startMatrixPointers (m , m);
+    Matrix* giantMatrix = startMatrixPointers ((int)m ,(int) m);
     Matrix* newNode;
     Matrix* matrixHead = giantMatrix;
 
@@ -363,8 +408,8 @@ Matrix* matrix100Megas(unsigned int m){
             } else{
                 newNode             = (Matrix*) malloc(sizeof(Matrix));
                 newNode -> info     = element;
-                newNode -> line     = i;
-                newNode -> column   = j;
+                newNode -> line     = (int) i;
+                newNode -> column   = (int) j;
 
                 newNode->right = giantMatrix->right;
                 giantMatrix->right = newNode;
@@ -376,6 +421,6 @@ Matrix* matrix100Megas(unsigned int m){
         giantMatrix = giantMatrix->below;
         size += sizeof(giantMatrix);
     }
-    printf("The Size of the new Matrix is: %d bytes", size);
+    printf("The Size of the new Matrix is: %ld bytes", size);
     return giantMatrix;
 }
