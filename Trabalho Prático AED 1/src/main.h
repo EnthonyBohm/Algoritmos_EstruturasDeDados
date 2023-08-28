@@ -16,7 +16,7 @@ void    matrix_destroy (Matrix* m);
 void    matrix_print (Matrix* m);
 Matrix* matrix_add (Matrix *m, Matrix *n);
 Matrix* matrix_multiply (Matrix *m, Matrix *n);
-Matrix* matrix_transpose (Matrix *m, Matrix *n);
+Matrix* matrix_transpose (Matrix *m);
 float   getElem(Matrix* m, int line, int column);
 void    setElem(Matrix* m, int line, int column, float content);
 //ExtraFunctions
